@@ -1,6 +1,15 @@
-import express, { Application, json } from 'express'
+import "express-async-errors";
+import express, { Application } from "express";
+import userRoutes from "./routers/users.routes";
+import { handleErrors } from "./error";
+import loginRoutes from "./routers/login.routes";
 
-const app: Application = express()
-app.use(json())
+const app: Application = express();
 
-export default app
+app.use(express.json());
+
+app.use("/users", userRoutes);
+app.use("/login", loginRoutes);
+app.use(handleErrors);
+
+export default app;
