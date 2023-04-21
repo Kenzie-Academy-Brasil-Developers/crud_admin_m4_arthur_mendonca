@@ -1,6 +1,6 @@
 import { QueryResult } from "pg";
-import { client } from "../database";
-import { TUser } from "../interfaces/users.interfaces";
+import { client } from "../../database";
+import { TUser } from "../../interfaces/users.interfaces";
 
 const listUsersService = async (): Promise<Array<TUser>> => {
   const queryString: string = `

@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { QueryConfig, QueryResult } from "pg";
-import { client } from "../database";
+import { client } from "../../database";
 
 const getLoggedUserService = async (userId: number): Promise<Response> => {
   const queryString: string = `

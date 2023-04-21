@@ -3,11 +3,12 @@
 import { Request, Response } from "express";
 import { createUserService } from "../services/users/createUser.service";
 import { TLogin, TUser } from "../interfaces/users.interfaces";
-import { listUsersService } from "../services/listUsers.service";
+import { listUsersService } from "../services/users/listUsers.service";
 import { createUserSchema, userSchema } from "../schemas/users.schemas";
 import loginUserService from "../services/login/loginUser.service";
-import getLoggedUserService from "../services/getLoggedUser.service";
-import updateUserDataService from "../services/updateUserData.service";
+import getLoggedUserService from "../services/users/getLoggedUser.service";
+import updateUserDataService from "../services/users/updateUserData.service";
+import deleteUserService from "../services/users/deleteUser.service";
 
 const createUserController = async (
   request: Request,
@@ -69,10 +70,28 @@ const updateUserDataController = async (
   return response.status(200).json(updatedUser);
 };
 
+const deleteUserController = async (
+  request: Request,
+  response: Response
+): Promise<Response> => {
+  const userIdFromRequest = Number(request.params.id);
+  const userIsAdmin = response.locals.admin;
+  const userIdFromDataBase = Number(response.locals.userId);
+
+  const softDeleteUser = await deleteUserService(
+    userIdFromRequest,
+    userIdFromDataBase,
+    userIsAdmin
+  );
+
+  return response.status(204).json(softDeleteUser);
+};
+
 export {
   createUserController,
   listUsersController,
   loginUserController,
   getLoggedUserController,
   updateUserDataController,
+  deleteUserController,
 };

@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { QueryConfig, QueryResult } from "pg";
 import format from "pg-format";
-import { client } from "../database";
-import { TUpdatedUserResponseSchema } from "../interfaces/users.interfaces";
-import { AppError } from "../error";
+import { client } from "../../database";
+import { TUpdatedUserResponseSchema } from "../../interfaces/users.interfaces";
+import { AppError } from "../../error";
 
 const updateUserDataService = async (
   userIdFromRequest: number,

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createUserController,
+  deleteUserController,
   getLoggedUserController,
   listUsersController,
   updateUserDataController,
@@ -38,7 +39,12 @@ userRoutes.patch(
   checkIfAdminMiddleware,
   updateUserDataController
 ); // Atualizar os dados de um usuário
-userRoutes.delete("/:id", checkUserIdMiddleware); // Fazer um soft delete de um usuário
+userRoutes.delete(
+  "/:id",
+  checkUserIdMiddleware,
+  checkBearerTokenMiddleware,
+  deleteUserController
+); // Fazer um soft delete de um usuário
 userRoutes.put(":id/recover", checkUserIdMiddleware); // Reativar um usuário
 
 export default userRoutes;
