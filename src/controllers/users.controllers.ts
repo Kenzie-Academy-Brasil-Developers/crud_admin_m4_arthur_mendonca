@@ -1,14 +1,13 @@
-// Recebe os dados de entrada da requisição e retorna a resposta ao usuário.
-// Não deve conter lógica ou regra de negócio da aplicação.
 import { Request, Response } from "express";
 import { createUserService } from "../services/users/createUser.service";
 import { TLogin, TUser } from "../interfaces/users.interfaces";
 import { listUsersService } from "../services/users/listUsers.service";
-import { createUserSchema, userSchema } from "../schemas/users.schemas";
+import { createUserSchema } from "../schemas/users.schemas";
 import loginUserService from "../services/login/loginUser.service";
 import getLoggedUserService from "../services/users/getLoggedUser.service";
 import updateUserDataService from "../services/users/updateUserData.service";
 import deleteUserService from "../services/users/deleteUser.service";
+import reactivateUserService from "../services/users/reactivateUser.service";
 
 const createUserController = async (
   request: Request,
@@ -87,6 +86,19 @@ const deleteUserController = async (
   return response.status(204).json(softDeleteUser);
 };
 
+const reactivateUserController = async (
+  request: Request,
+  response: Response
+): Promise<Response> => {
+  const userId = Number(request.params.id);
+  const userIsActive: boolean = response.locals.userIsActive;
+  const admin = response.locals.admin;
+
+  const reactivate = await reactivateUserService(userId, admin, userIsActive);
+
+  return response.status(200).json(reactivate);
+};
+
 export {
   createUserController,
   listUsersController,
@@ -94,4 +106,5 @@ export {
   getLoggedUserController,
   updateUserDataController,
   deleteUserController,
+  reactivateUserController,
 };

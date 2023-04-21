@@ -4,6 +4,7 @@ import {
   deleteUserController,
   getLoggedUserController,
   listUsersController,
+  reactivateUserController,
   updateUserDataController,
 } from "../controllers/users.controllers";
 import { checkIfEmailExistsMiddleware } from "../middlewares/checkIfEmailExists.middleware";
@@ -20,7 +21,7 @@ const userRoutes: Router = Router();
 
 userRoutes.post(
   "",
-  checkIfBodyRequestIsValidMiddleware(createUserSchema),
+  checkIfBodyRequestIsValidMiddleware(updatedUserResponseSchema),
   checkIfEmailExistsMiddleware,
   createUserController
 ); //Cadastrar um novo usuário
@@ -45,6 +46,6 @@ userRoutes.delete(
   checkBearerTokenMiddleware,
   deleteUserController
 ); // Fazer um soft delete de um usuário
-userRoutes.put(":id/recover", checkUserIdMiddleware); // Reativar um usuário
+userRoutes.put("/:id/recover", checkUserIdMiddleware, reactivateUserController); // Reativar um usuário
 
 export default userRoutes;
