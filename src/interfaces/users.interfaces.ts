@@ -1,12 +1,12 @@
-import { z } from "zod";
+import { TypeOf, z } from "zod";
 import {
   loginSchema,
   passwordSchema,
   userLoginInfo,
   userSchema,
+  updateUserSchema,
+  updatedUserResponseSchema,
 } from "../schemas/users.schemas";
-
-type IUser = z.infer<typeof userSchema>;
 
 type TUser = z.infer<typeof userSchema>;
 
@@ -18,4 +18,16 @@ type TUserLoginInfo = z.infer<typeof userLoginInfo>;
 
 type TUserLoginReturn = Omit<TUserLoginInfo, "email">;
 
-export { IUser, TUser, TLogin, TPassword, TUserLoginInfo, TUserLoginReturn };
+type TUpdateUserRequest = z.infer<typeof updateUserSchema>;
+
+type TUpdatedUserResponseSchema = z.infer<typeof updatedUserResponseSchema>;
+
+export {
+  TUser,
+  TLogin,
+  TPassword,
+  TUserLoginInfo,
+  TUserLoginReturn,
+  TUpdateUserRequest,
+  TUpdatedUserResponseSchema,
+};

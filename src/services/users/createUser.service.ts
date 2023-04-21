@@ -1,11 +1,11 @@
-import { TUser, IUser } from "../../interfaces/users.interfaces";
+import { TUser } from "../../interfaces/users.interfaces";
 import { QueryResult } from "pg";
 import { client } from "../../database";
 import format from "pg-format";
 import { userSchema } from "../../schemas/users.schemas";
 import { hash } from "bcryptjs";
 
-const createUserService = async (userData: TUser): Promise<IUser> => {
+const createUserService = async (userData: TUser): Promise<TUser> => {
   const hashedPassword: string = await hash(userData.password, 10);
 
   userData.password = hashedPassword;
@@ -23,7 +23,7 @@ const createUserService = async (userData: TUser): Promise<IUser> => {
     Object.values(userData)
   );
 
-  const queryResult: QueryResult<IUser> = await client.query(queryFormat);
+  const queryResult: QueryResult<TUser> = await client.query(queryFormat);
 
   return userSchema.parse(queryResult.rows[0]);
 };

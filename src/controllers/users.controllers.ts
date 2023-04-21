@@ -2,10 +2,12 @@
 // Não deve conter lógica ou regra de negócio da aplicação.
 import { Request, Response } from "express";
 import { createUserService } from "../services/users/createUser.service";
-import { IUser, TLogin, TUser } from "../interfaces/users.interfaces";
+import { TLogin, TUser } from "../interfaces/users.interfaces";
 import { listUsersService } from "../services/listUsers.service";
 import { createUserSchema, userSchema } from "../schemas/users.schemas";
 import loginUserService from "../services/login/loginUser.service";
+import getLoggedUserService from "../services/getLoggedUser.service";
+import updateUserDataService from "../services/updateUserData.service";
 
 const createUserController = async (
   request: Request,
@@ -22,9 +24,9 @@ const listUsersController = async (
   request: Request,
   response: Response
 ): Promise<Response | void> => {
-  const listUsers = listUsersService();
+  const listUsers = await listUsersService();
 
-  return response.status(200).json(listUsers);
+  return response.json(listUsers);
 };
 
 const loginUserController = async (
@@ -38,4 +40,39 @@ const loginUserController = async (
   return response.json(token);
 };
 
-export { createUserController, listUsersController, loginUserController };
+const getLoggedUserController = async (
+  request: Request,
+  response: Response
+): Promise<Response> => {
+  const userId = response.locals.userId;
+
+  const getLoggedUser = await getLoggedUserService(userId);
+
+  return response.status(200).json(getLoggedUser);
+};
+
+const updateUserDataController = async (
+  request: Request,
+  response: Response
+): Promise<Response> => {
+  const userIdFromDataBase = Number(response.locals.userId);
+  const userIdFromRequest = Number(request.params.id);
+  const userIsAdmin = response.locals.admin;
+
+  const updatedUser = await updateUserDataService(
+    userIdFromRequest,
+    userIdFromDataBase,
+    request.body,
+    userIsAdmin
+  );
+
+  return response.status(200).json(updatedUser);
+};
+
+export {
+  createUserController,
+  listUsersController,
+  loginUserController,
+  getLoggedUserController,
+  updateUserDataController,
+};

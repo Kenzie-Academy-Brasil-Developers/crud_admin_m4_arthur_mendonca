@@ -1,17 +1,44 @@
 import { Router } from "express";
 import {
   createUserController,
+  getLoggedUserController,
   listUsersController,
+  updateUserDataController,
 } from "../controllers/users.controllers";
 import { checkIfEmailExistsMiddleware } from "../middlewares/checkIfEmailExists.middleware";
+import checkBearerTokenMiddleware from "../middlewares/checkBearerToken.middleware";
+import checkIfBodyRequestIsValidMiddleware from "../middlewares/checkIfBodyRequestIsValid.middleware";
+import {
+  createUserSchema,
+  updatedUserResponseSchema,
+} from "../schemas/users.schemas";
+import checkIfAdminMiddleware from "../middlewares/checkIfAdmin.middleware";
+import checkUserIdMiddleware from "../middlewares/checkUserId.middleware";
 
 const userRoutes: Router = Router();
 
-userRoutes.post("", checkIfEmailExistsMiddleware, createUserController); //Cadastrar um novo usuário
-userRoutes.get("", listUsersController); // Listar todos os usuários da aplicação
-userRoutes.get("/profile"); // Listar um usuário que está logado na aplicação
-userRoutes.patch("/:id"); // Atualizar os dados de um usuário
-userRoutes.delete("/:id"); // Fazer um soft delete de um usuário
-userRoutes.put(":id/recover"); // Reativar um usuário
+userRoutes.post(
+  "",
+  checkIfBodyRequestIsValidMiddleware(createUserSchema),
+  checkIfEmailExistsMiddleware,
+  createUserController
+); //Cadastrar um novo usuário
+userRoutes.get(
+  "",
+  checkBearerTokenMiddleware,
+  checkIfAdminMiddleware,
+  listUsersController
+); // Listar todos os usuários da aplicação
+userRoutes.get("/profile", checkBearerTokenMiddleware, getLoggedUserController); // Listar um usuário que está logado na aplicação
+userRoutes.patch(
+  "/:id",
+  checkUserIdMiddleware,
+  checkIfBodyRequestIsValidMiddleware(updatedUserResponseSchema),
+  checkBearerTokenMiddleware,
+  checkIfAdminMiddleware,
+  updateUserDataController
+); // Atualizar os dados de um usuário
+userRoutes.delete("/:id", checkUserIdMiddleware); // Fazer um soft delete de um usuário
+userRoutes.put(":id/recover", checkUserIdMiddleware); // Reativar um usuário
 
 export default userRoutes;

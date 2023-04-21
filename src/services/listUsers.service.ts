@@ -1,13 +1,13 @@
 import { QueryResult } from "pg";
 import { client } from "../database";
-import { IUser } from "../interfaces/users.interfaces";
+import { TUser } from "../interfaces/users.interfaces";
 
-const listUsersService = async (): Promise<Array<IUser>> => {
+const listUsersService = async (): Promise<Array<TUser>> => {
   const queryString: string = `
-    SELECT * 
-    FROM users
-    RETURNING *;
-    `;
+  SELECT 
+  id, name, email, admin, active 
+  FROM users;
+  `;
 
   const queryResult: QueryResult = await client.query(queryString);
 

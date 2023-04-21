@@ -1,10 +1,10 @@
+import "dotenv/config";
 import { QueryConfig, QueryResult } from "pg";
 import { TLogin, TUserLoginReturn } from "../../interfaces/users.interfaces";
 import { client } from "../../database";
 import { compare } from "bcryptjs";
 import { AppError } from "../../error";
 import { sign } from "jsonwebtoken";
-import { request } from "http";
 
 const loginUserService = async (loginData: TLogin): Promise<string> => {
   const requestData = loginData;
@@ -32,17 +32,13 @@ const loginUserService = async (loginData: TLogin): Promise<string> => {
     userDataFromDatabase.password
   );
 
-  console.log(userDataFromDatabase.password);
-
-  console.log(requestData.password, userDataFromDatabase.password);
-
   if (!passwordMatch) {
     throw new AppError("Wrong email/password", 401);
   }
 
   const token: string = sign(
     { email: requestData.email },
-    String(requestData.password),
+    process.env.SECRET_KEY!,
     { expiresIn: "24h", subject: String(userDataFromDatabase.id) }
   );
 
@@ -50,3 +46,5 @@ const loginUserService = async (loginData: TLogin): Promise<string> => {
 };
 
 export default loginUserService;
+
+// String(requestData.password)

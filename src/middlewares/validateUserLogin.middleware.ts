@@ -22,8 +22,6 @@ const validateUserLoginMiddleware = async (
 
     const queryResult: QueryResult = await client.query(queryConfig);
 
-    console.log(queryResult.rows);
-
     if (queryResult.rows.length === 0) {
       throw new AppError("Wrong email/password", 401);
     }
