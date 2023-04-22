@@ -12,6 +12,7 @@ import checkBearerTokenMiddleware from "../middlewares/checkBearerToken.middlewa
 import checkIfBodyRequestIsValidMiddleware from "../middlewares/checkIfBodyRequestIsValid.middleware";
 import {
   createUserSchema,
+  createUserSchemaResponse,
   updatedUserResponseSchema,
 } from "../schemas/users.schemas";
 import checkIfAdminMiddleware from "../middlewares/checkIfAdmin.middleware";
@@ -21,7 +22,7 @@ const userRoutes: Router = Router();
 
 userRoutes.post(
   "",
-  checkIfBodyRequestIsValidMiddleware(updatedUserResponseSchema),
+  checkIfBodyRequestIsValidMiddleware(createUserSchema),
   checkIfEmailExistsMiddleware,
   createUserController
 ); //Cadastrar um novo usuário

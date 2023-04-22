@@ -6,7 +6,7 @@ import { userSchema } from "../../schemas/users.schemas";
 import { hash } from "bcryptjs";
 
 const createUserService = async (userData: TUser): Promise<TUser> => {
-  const hashedPassword: string = await hash(userData.password, 10);
+  const hashedPassword: string = await hash(userData.password!, 10);
 
   userData.password = hashedPassword;
 
@@ -14,7 +14,7 @@ const createUserService = async (userData: TUser): Promise<TUser> => {
     INSERT INTO 
     users (%I)
     values (%L)
-    RETURNING *;
+    RETURNING id, "name", email, admin, active;
     `;
 
   const queryFormat = format(
@@ -24,6 +24,8 @@ const createUserService = async (userData: TUser): Promise<TUser> => {
   );
 
   const queryResult: QueryResult<TUser> = await client.query(queryFormat);
+
+  console.log(queryResult.rows[0]);
 
   return userSchema.parse(queryResult.rows[0]);
 };

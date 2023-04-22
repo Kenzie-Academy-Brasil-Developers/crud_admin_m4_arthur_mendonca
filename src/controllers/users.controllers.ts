@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import { createUserService } from "../services/users/createUser.service";
-import { TLogin, TUser } from "../interfaces/users.interfaces";
+import { TUser } from "../interfaces/users.interfaces";
 import { listUsersService } from "../services/users/listUsers.service";
-import { createUserSchema } from "../schemas/users.schemas";
-import loginUserService from "../services/login/loginUser.service";
+import {
+  createUserSchema,
+  createUserSchemaResponse,
+} from "../schemas/users.schemas";
 import getLoggedUserService from "../services/users/getLoggedUser.service";
 import updateUserDataService from "../services/users/updateUserData.service";
 import deleteUserService from "../services/users/deleteUser.service";
@@ -13,7 +15,7 @@ const createUserController = async (
   request: Request,
   response: Response
 ): Promise<Response> => {
-  const userData: TUser = createUserSchema.parse(request.body);
+  const userData: TUser = createUserSchemaResponse.parse(request.body);
 
   const newUser: TUser = await createUserService(userData);
 
@@ -27,17 +29,6 @@ const listUsersController = async (
   const listUsers = await listUsersService();
 
   return response.json(listUsers);
-};
-
-const loginUserController = async (
-  request: Request,
-  response: Response
-): Promise<Response> => {
-  const loginUser: TLogin = request.body;
-
-  const token = await loginUserService(loginUser);
-
-  return response.json(token);
 };
 
 const getLoggedUserController = async (
@@ -58,6 +49,10 @@ const updateUserDataController = async (
   const userIdFromDataBase = Number(response.locals.userId);
   const userIdFromRequest = Number(request.params.id);
   const userIsAdmin = response.locals.admin;
+
+  console.log(userIdFromDataBase);
+  console.log(userIdFromRequest + 1);
+  console.log(userIsAdmin);
 
   const updatedUser = await updateUserDataService(
     userIdFromRequest,
@@ -102,7 +97,6 @@ const reactivateUserController = async (
 export {
   createUserController,
   listUsersController,
-  loginUserController,
   getLoggedUserController,
   updateUserDataController,
   deleteUserController,

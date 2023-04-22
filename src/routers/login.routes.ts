@@ -1,14 +1,17 @@
 import { Router } from "express";
-import { loginUserController } from "../controllers/users.controllers";
 import validateUserLoginMiddleware from "../middlewares/validateUserLogin.middleware";
 import checkIfUserIsActiveMiddleware from "../middlewares/checkIfUserIsActive.middleware";
+import loginUserController from "../controllers/login.controllers";
+import checkIfBodyRequestIsValidMiddleware from "../middlewares/checkIfBodyRequestIsValid.middleware";
+import { loginSchema } from "../schemas/users.schemas";
 
 const loginRoutes: Router = Router();
 
 loginRoutes.post(
   "",
-  checkIfUserIsActiveMiddleware,
+  checkIfBodyRequestIsValidMiddleware(loginSchema),
   validateUserLoginMiddleware,
+  // checkIfUserIsActiveMiddleware,
   loginUserController
 ); // Logar com um usuário na aplicação gerando um token.
 

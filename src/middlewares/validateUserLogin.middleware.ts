@@ -10,6 +10,8 @@ const validateUserLoginMiddleware = async (
   next: NextFunction
 ) => {
   const loginData: TLogin = request.body;
+
+  console.log(loginData);
   try {
     const queryString: string = `
     SELECT * FROM users 
@@ -22,7 +24,9 @@ const validateUserLoginMiddleware = async (
 
     const queryResult: QueryResult = await client.query(queryConfig);
 
-    if (queryResult.rows.length === 0) {
+    // console.log(queryResult);
+
+    if (queryResult.rowCount === 0) {
       throw new AppError("Wrong email/password", 401);
     }
     return next();

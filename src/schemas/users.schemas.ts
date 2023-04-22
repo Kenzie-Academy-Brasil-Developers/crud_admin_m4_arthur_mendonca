@@ -4,12 +4,21 @@ const userSchema = z.object({
   id: z.number().optional(),
   name: z.string(),
   email: z.string().email(),
-  password: z.string().min(4),
+  password: z.string().min(4).optional(),
   admin: z.boolean().default(false),
   active: z.boolean().default(true),
 });
 
 const createUserSchema = userSchema.omit({ id: true });
+
+const createUserSchemaResponse = z.object({
+  id: z.number().optional(),
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string().min(4).optional(),
+  admin: z.boolean().default(false),
+  active: z.boolean().default(true),
+});
 
 const updateUserSchema = createUserSchema.partial();
 
@@ -39,4 +48,5 @@ export {
   userAdminSchema,
   updateUserSchema,
   updatedUserResponseSchema,
+  createUserSchemaResponse,
 };
