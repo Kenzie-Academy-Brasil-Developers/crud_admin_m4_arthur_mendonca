@@ -6,6 +6,7 @@ import {
   userSchema,
   updateUserSchema,
   updatedUserResponseSchema,
+  reactivateUserSchema,
 } from "../schemas/users.schemas";
 
 type TUser = z.infer<typeof userSchema>;
@@ -22,6 +23,8 @@ type TUpdateUserRequest = z.infer<typeof updateUserSchema>;
 
 type TUpdatedUserResponseSchema = z.infer<typeof updatedUserResponseSchema>;
 
+type TReactivateUser = z.infer<typeof reactivateUserSchema>;
+
 export {
   TUser,
   TLogin,
@@ -30,4 +33,5 @@ export {
   TUserLoginReturn,
   TUpdateUserRequest,
   TUpdatedUserResponseSchema,
+  TReactivateUser,
 };

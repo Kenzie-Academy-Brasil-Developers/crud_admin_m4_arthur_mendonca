@@ -20,6 +20,14 @@ const createUserSchemaResponse = z.object({
   active: z.boolean().default(true),
 });
 
+const reactivateUserSchema = z.object({
+  id: z.number().optional(),
+  name: z.string(),
+  email: z.string().email(),
+  admin: z.boolean().default(false),
+  active: z.boolean().default(true),
+});
+
 const updateUserSchema = createUserSchema.partial();
 
 const updatedUserResponseSchema = updateUserSchema.omit({ password: true });
@@ -49,4 +57,5 @@ export {
   updateUserSchema,
   updatedUserResponseSchema,
   createUserSchemaResponse,
+  reactivateUserSchema,
 };
