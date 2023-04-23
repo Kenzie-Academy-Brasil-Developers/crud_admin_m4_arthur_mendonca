@@ -31,10 +31,6 @@ const checkIfUserIsActiveMiddleware = async (
 
   response.locals.userIsActive = userIsActive;
 
-  if (!userIsActive) {
-    throw new AppError("Wrong email/password", 401);
-  }
-
   return next();
 };
 

@@ -2,10 +2,8 @@ import "dotenv/config";
 import { NextFunction, Request, Response } from "express";
 import { AppError } from "../error";
 import jwt from "jsonwebtoken";
-import { decode } from "punycode";
 import { QueryConfig, QueryResult } from "pg";
 import { client } from "../database";
-import { userAdminSchema } from "../schemas/users.schemas";
 
 const checkBearerTokenMiddleware = async (
   request: Request,
@@ -26,10 +24,7 @@ const checkBearerTokenMiddleware = async (
       throw new AppError(err.message, 401);
     }
 
-    userId = decoded.sub;
-    console.log(decoded.sub);
-
-    response.locals.userId = decoded.sub;
+    userId = decoded?.sub;
   });
 
   const queryString: string = `
@@ -47,7 +42,12 @@ const checkBearerTokenMiddleware = async (
   const queryResult: QueryResult = await client.query(queryConfig);
 
   const admin: boolean = queryResult.rows[0].admin;
+
   response.locals.admin = admin;
+
+  response.locals.userId = queryResult.rows[0].id;
+
+  response.locals.userIsActive = queryResult.rows[0].active;
 
   return next();
 };

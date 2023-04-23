@@ -50,10 +50,6 @@ const updateUserDataController = async (
   const userIdFromRequest = Number(request.params.id);
   const userIsAdmin = response.locals.admin;
 
-  console.log(userIdFromDataBase);
-  console.log(userIdFromRequest + 1);
-  console.log(userIsAdmin);
-
   const updatedUser = await updateUserDataService(
     userIdFromRequest,
     userIdFromDataBase,

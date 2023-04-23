@@ -17,6 +17,7 @@ import {
 } from "../schemas/users.schemas";
 import checkIfAdminMiddleware from "../middlewares/checkIfAdmin.middleware";
 import checkUserIdMiddleware from "../middlewares/checkUserId.middleware";
+import checkIfUserIsActiveMiddleware from "../middlewares/checkIfUserIsActive.middleware";
 
 const userRoutes: Router = Router();
 
@@ -36,9 +37,9 @@ userRoutes.get("/profile", checkBearerTokenMiddleware, getLoggedUserController);
 userRoutes.patch(
   "/:id",
   checkUserIdMiddleware,
-  checkIfBodyRequestIsValidMiddleware(updatedUserResponseSchema),
   checkBearerTokenMiddleware,
   checkIfAdminMiddleware,
+  checkIfBodyRequestIsValidMiddleware(updatedUserResponseSchema),
   updateUserDataController
 ); // Atualizar os dados de um usuário
 userRoutes.delete(
@@ -47,6 +48,11 @@ userRoutes.delete(
   checkBearerTokenMiddleware,
   deleteUserController
 ); // Fazer um soft delete de um usuário
-userRoutes.put("/:id/recover", checkUserIdMiddleware, reactivateUserController); // Reativar um usuário
+userRoutes.put(
+  "/:id/recover",
+  checkUserIdMiddleware,
+  checkBearerTokenMiddleware,
+  reactivateUserController
+); // Reativar um usuário
 
 export default userRoutes;

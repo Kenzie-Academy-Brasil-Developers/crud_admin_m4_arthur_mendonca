@@ -11,8 +11,6 @@ const updateUserDataService = async (
   userData: TUpdatedUserResponseSchema,
   userIsAdmin: boolean
 ): Promise<QueryResult | void> => {
-  // console.log(userIdFromDataBase);
-  // console.log(userIdFromRequest);
   if (userIsAdmin) {
     const queryFormat = format(
       `
