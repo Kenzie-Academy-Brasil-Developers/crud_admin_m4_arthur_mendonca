@@ -26,33 +26,32 @@ userRoutes.post(
   checkIfBodyRequestIsValidMiddleware(createUserSchema),
   checkIfEmailExistsMiddleware,
   createUserController
-); //Cadastrar um novo usuário
+);
 userRoutes.get(
   "",
   checkBearerTokenMiddleware,
   checkIfAdminMiddleware,
   listUsersController
-); // Listar todos os usuários da aplicação
+);
 userRoutes.get("/profile", checkBearerTokenMiddleware, getLoggedUserController); // Listar um usuário que está logado na aplicação
 userRoutes.patch(
   "/:id",
   checkUserIdMiddleware,
   checkBearerTokenMiddleware,
-  checkIfAdminMiddleware,
   checkIfBodyRequestIsValidMiddleware(updatedUserResponseSchema),
   updateUserDataController
-); // Atualizar os dados de um usuário
+);
 userRoutes.delete(
   "/:id",
   checkUserIdMiddleware,
   checkBearerTokenMiddleware,
   deleteUserController
-); // Fazer um soft delete de um usuário
+);
 userRoutes.put(
   "/:id/recover",
   checkUserIdMiddleware,
   checkBearerTokenMiddleware,
   reactivateUserController
-); // Reativar um usuário
+);
 
 export default userRoutes;

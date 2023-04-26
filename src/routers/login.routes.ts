@@ -11,8 +11,7 @@ loginRoutes.post(
   "",
   checkIfBodyRequestIsValidMiddleware(loginSchema),
   validateUserLoginMiddleware,
-  // checkIfUserIsActiveMiddleware,
   loginUserController
-); // Logar com um usuário na aplicação gerando um token.
+);
 
 export default loginRoutes;

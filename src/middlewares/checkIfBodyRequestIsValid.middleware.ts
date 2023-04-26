@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ZodError, ZodTypeAny } from "zod";
-import { AppError } from "../error";
+import { ZodTypeAny } from "zod";
 
 const checkIfBodyRequestIsValidMiddleware =
   (schema: ZodTypeAny) =>

@@ -1,8 +1,7 @@
 import { QueryConfig, QueryResult } from "pg";
-import { TLogin, TUser } from "../../interfaces/users.interfaces";
+import { TUser } from "../../interfaces/users.interfaces";
 import { client } from "../../database";
 import { AppError } from "../../error";
-import { reactivateUserSchema } from "../../schemas/users.schemas";
 
 const reactivateUserService = async (
   userId: number,
@@ -28,11 +27,10 @@ const reactivateUserService = async (
 
     const queryResult: QueryResult<TUser> = await client.query(queryConfig);
 
-    console.log(queryResult.rows[0]);
-
     if (queryResult.rows[0].active === true) {
       throw new AppError("User already active", 400);
     }
+
     const queryStringReactivate: string = `
     UPDATE users
     SET active = true

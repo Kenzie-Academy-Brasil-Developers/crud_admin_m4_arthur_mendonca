@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { QueryConfig, QueryResult } from "pg";
 import { client } from "../database";
-import { AppError } from "../error";
 
 const checkIfUserIsActiveMiddleware = async (
   request: Request,

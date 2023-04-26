@@ -2,10 +2,7 @@ import { Request, Response } from "express";
 import { createUserService } from "../services/users/createUser.service";
 import { TUser } from "../interfaces/users.interfaces";
 import { listUsersService } from "../services/users/listUsers.service";
-import {
-  createUserSchema,
-  createUserSchemaResponse,
-} from "../schemas/users.schemas";
+import { createUserSchemaResponse } from "../schemas/users.schemas";
 import getLoggedUserService from "../services/users/getLoggedUser.service";
 import updateUserDataService from "../services/users/updateUserData.service";
 import deleteUserService from "../services/users/deleteUser.service";
